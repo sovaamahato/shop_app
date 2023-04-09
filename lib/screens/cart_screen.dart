@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
-import '../widget/cart_item.dart' as ci;
+import '../providers/orders.dart';
+import '../widget/cart_item.dart' as ci ;
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -39,14 +40,22 @@ class CartScreen extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
+                  Container(
+                      child: InkWell(
+                        onTap: () {
+  try {
+    print("pressed");
+    Provider.of<Order>(context, listen: false).addOrder(cart.items.values.cast<ci.CartItem>().toList(), cart.totalAmount);
+    cart.clear();
+  } catch (e) {
+    print("Error: $e");
+  }
+},
                         child: Text(
-                      "ORDER NOW",
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    )),
-                  )
+                                          "ORDER NOW",
+                                          style: TextStyle(color: Theme.of(context).primaryColor),
+                                        ),
+                      ))
                 ]),
           ),
         ),
@@ -58,6 +67,7 @@ class CartScreen extends StatelessWidget {
               itemCount: cart.items.length,
                 itemBuilder: (ctx, i) => ci.CartItem(
                     id: cart.items.values.toList()[i].id,
+                    productId: cart.items.keys.toList()[i],
                     price: cart.items.values.toList()[i].price,
                     quantity: cart.items.values.toList()[i].quantity,
                     title:cart.items.values.toList()[i].title)))

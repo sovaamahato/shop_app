@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
 import '../providers/orders.dart';
-import '../widget/cart_item.dart' as ci ;
+import '../widget/cart_item.dart' as ci;
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -42,20 +42,22 @@ class CartScreen extends StatelessWidget {
                   ),
                   Container(
                       child: InkWell(
-                        onTap: () {
-  try {
-    print("pressed");
-    Provider.of<Order>(context, listen: false).addOrder(cart.items.values.cast<ci.CartItem>().toList(), cart.totalAmount);
-    cart.clear();
-  } catch (e) {
-    print("Error: $e");
-  }
-},
-                        child: Text(
-                                          "ORDER NOW",
-                                          style: TextStyle(color: Theme.of(context).primaryColor),
-                                        ),
-                      ))
+                    onTap: () {
+                      try {
+                        print("pressed");
+                        Provider.of<Order>(context, listen: false).addOrder(
+                            cart.items.values.cast<ci.CartItem>().toList(),
+                            cart.totalAmount);
+                        cart.clear();
+                      } catch (e) {
+                        print("Error: $e");
+                      }
+                    },
+                    child: Text(
+                      "ORDER NOW",
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  ))
                 ]),
           ),
         ),
@@ -64,13 +66,13 @@ class CartScreen extends StatelessWidget {
         ),
         Expanded(
             child: ListView.builder(
-              itemCount: cart.items.length,
+                itemCount: cart.items.length,
                 itemBuilder: (ctx, i) => ci.CartItem(
                     id: cart.items.values.toList()[i].id,
                     productId: cart.items.keys.toList()[i],
                     price: cart.items.values.toList()[i].price,
                     quantity: cart.items.values.toList()[i].quantity,
-                    title:cart.items.values.toList()[i].title)))
+                    title: cart.items.values.toList()[i].title)))
       ]),
     );
   }
